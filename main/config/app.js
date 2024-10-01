@@ -1,11 +1,13 @@
 const express = require('express');
-const path = require('path');
 const app = express();
-const contentRouter = require('../routes/htmlRoutes');
+const setStaticFiles = require("./staticFiles")
+const setViewEngine = require("./viewEngine")
+const setMiddlewares = require("./middleware")
+const setRoutes = require("./routes")
 
-app.set('views', 'view');
-app.set('view engine', 'ejs');
-app.use(express.static(path.join(__dirname, '../../view')));
-app.use('/', contentRouter);
+setStaticFiles(app)
+setViewEngine(app)
+setMiddlewares(app)
+setRoutes(app)
 
 module.exports = app;
