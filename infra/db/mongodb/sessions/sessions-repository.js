@@ -13,6 +13,12 @@ class UsersMongoRepository {
       return MongoHelper.mapObjectId(session)
     }
   
+    async loadByUserId (user_id){
+      const sessionsCollection = await MongoHelper.getCollection('sessions')
+      const sessions = await sessionsCollection.find({ user_id: ObjectId.createFromHexString(user_id) }).toArray()
+      return sessions.map(session => MongoHelper.mapObjectId(session))
+    }
+  
 
 }
   
