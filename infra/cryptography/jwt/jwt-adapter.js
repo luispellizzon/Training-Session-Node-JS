@@ -11,7 +11,7 @@ class JwtAdapter{
         return accessToken
     }
 
-    async decrypt (token){
+    decrypt(token) {
         const payload = jwt.verify(token, this.#secret)
         return payload
     }

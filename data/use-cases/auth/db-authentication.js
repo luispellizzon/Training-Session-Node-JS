@@ -26,7 +26,7 @@ class DbAuthentication{
     }
 
     const accessToken = await this.#encrypter.encrypt({
-      _id: account._id,
+      user_id: account._id,
       role: account.role
     })
 

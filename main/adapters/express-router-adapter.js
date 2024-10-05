@@ -1,7 +1,8 @@
 const expressRouterAdapter = (controller) => {
     return async(req, res) => {
         const request = {
-            body: req.body
+            body: req.body,
+            user_id: req.user_id
         }
 
         const routeResponse = await controller.handle(request)

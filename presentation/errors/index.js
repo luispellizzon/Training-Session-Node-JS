@@ -4,6 +4,8 @@ const MissingParamError = require("./missing-param-error")
 const ServerError = require("./server-error")
 const UnauthorizedError = require("./unauthorized-error")
 const AlreadyExistsError = require("./already-exists-error")
+const UserNotFoundError = require("./user-not-found")
+const SessionAlreadyExistsError = require("./session-already-exists-error")
 
 module.exports = {
     AccessDeniedError,
@@ -11,5 +13,7 @@ module.exports = {
     MissingParamError,
     ServerError,
     UnauthorizedError,
-    AlreadyExistsError
+    AlreadyExistsError,
+    UserNotFoundError,
+    SessionAlreadyExistsError
 }

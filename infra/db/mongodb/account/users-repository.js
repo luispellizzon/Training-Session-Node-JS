@@ -15,16 +15,10 @@ class UsersMongoRepository {
       return MongoHelper.mapObjectId(user)
     }
   
-    async loadById (userId){
+    async loadById (user_id){
       const usersCollection = await MongoHelper.getCollection('users')
-      const user = await usersCollection.findOne({ _id: new ObjectId(userId) })
+      const user = await usersCollection.findOne({ _id: ObjectId.createFromHexString(user_id) })
       return MongoHelper.mapObjectId(user)
-    }
-  
-    async deleteById (userId) {
-      const usersCollection = await MongoHelper.getCollection('users')
-      const deleteResult = await usersCollection.deleteOne({ _id: new ObjectId(userId) })
-      return deleteResult.deletedCount === 1
     }
 }
   
