@@ -4,7 +4,7 @@ const expressRouterAdapter = (controller) => {
             body: req.body
         }
 
-        const routeResponse = await controller(request)
+        const routeResponse = await controller.handle(request)
         if (routeResponse.statusCode >= 200 && routeResponse.statusCode <= 299) {
             res.status(routeResponse.statusCode).json(routeResponse.body)
         } else {
@@ -17,3 +17,4 @@ const expressRouterAdapter = (controller) => {
 }
 
 module.exports = expressRouterAdapter
+

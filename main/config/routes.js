@@ -8,14 +8,9 @@ module.exports = (app) => {
     app.use('/', contentRouter)
     app.use('/api', apiRouter)
 
-    fs.readdirSync(path.join(__dirname, '../routes/api')).map(async (file) => {
-        const route = require(`../routes/api/${file}`)
+    fs.readdirSync(path.join(__dirname, '../routes')).map(async (file) => {
+        const route = require(`../routes/${file}`)
         route(apiRouter)
-    })
-
-    fs.readdirSync(path.join(__dirname, '../routes/content')).map(async (file) => {
-        const route = require(`../routes/content/${file}`)
-        route(contentRouter)
     })
 
     app.all("*", (_, res) => {

@@ -1,4 +1,4 @@
-class InvalidParam extends Error{
+class InvalidParamError extends Error{
     constructor(param) {
         super()
         this.name = "InvalidParamError"
@@ -6,4 +6,4 @@ class InvalidParam extends Error{
     }
 }
 
-module.exports = InvalidParam
+module.exports = InvalidParamError

@@ -1,4 +1,4 @@
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
 
 class MongoHelper {
   static client = null;
@@ -21,6 +21,20 @@ class MongoHelper {
       await this.connect(this.uri);
     }
     return this.client.db().collection(collection);
+  }
+
+  static mapObjectId(dataObject) {
+    if (!dataObject) return null
+    const mappedObject = { ...dataObject }
+    for (const key in mappedObject) {
+      if (Object.prototype.hasOwnProperty.call(mappedObject, key)) {
+        const value = mappedObject[key]
+        if (ObjectId.isValid(value)) {
+          mappedObject[key] = value.toString()
+        }
+      }
+    }
+    return mappedObject
   }
 }
 

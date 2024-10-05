@@ -1,26 +1,49 @@
-const badRequest = (error) => {
-    return {
-        statusCode: 400,
-        body:error
-    }
-}
+const {UnauthorizedError,ServerError} = require("../errors") 
 
-const serverError = (error) => {
-    return {
-        statusCode: 500,
-        body:error
-    }
-}
+const badRequest = (e) => ({
+  statusCode: 400,
+  body: e
+})
+  
+const unauthorized = () => ({
+  statusCode: 401,
+  body: new UnauthorizedError()
+})
 
-const success = (data) => {
-    return {
-        statusCode: 200,
-        body:data
-    }
-}
+const forbidden = (e, headers) => ({
+  statusCode: 403,
+  body: e,
+  headers
+})
+  
+const notFound = (e) => ({
+    statusCode: 404,
+    body: e
+})
+  
+const serverError = (e) => ({
+  statusCode: 500,
+  body: new ServerError(e.stack)
+})
+  
+  
+const noContent = (headers) => ({
+  statusCode: 204,
+  body: null,
+  headers
+})
+
+const success = (data) => ({
+  statusCode: 200,
+  body:data
+})
 
 module.exports = {
-    badRequest,
-    serverError,
-    success
+  badRequest,
+  serverError,
+  success,
+  noContent,
+  notFound,
+  forbidden,
+  unauthorized
 }
