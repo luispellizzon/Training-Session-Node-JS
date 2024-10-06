@@ -31,12 +31,22 @@ class UsersMongoRepository {
             user_id: "$user_id",  
             facilities: "$facilities" 
           }
+        },
+        facilities: {
+          $addToSet: "$facilities"
         }
       })
       .project({
         _id: 0, 
         bookingDate: "$_id", 
-        sessions: 1 
+        sessions: 1,
+        facilities: {
+          $reduce: {
+            input: "$facilities",
+            initialValue: [],
+            in: { $setUnion: ["$$value", "$$this"] } 
+          }
+        } 
       })
       .sort({ bookingDate: 1 }) 
       .build();

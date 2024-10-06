@@ -11,7 +11,7 @@ const expressMiddlewareAdapter = (middleware) => {
       next()
     } else {
       res.status(httpResponse.statusCode).json({
-        error: httpRequest.body
+        error: httpResponse.body
       })
     }
   }
