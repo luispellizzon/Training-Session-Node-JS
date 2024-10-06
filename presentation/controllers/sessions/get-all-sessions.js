@@ -13,7 +13,6 @@ class GetAllSessions{
       return success(sessions)
       
     } catch (error) {
-      console.log(error)
       return serverError(error)
     }
   }

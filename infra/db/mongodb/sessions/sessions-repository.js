@@ -2,10 +2,33 @@ const MongoHelper = require("../../../helpers/MongoHelper")
 const MongoQueryBuilder = require("../../../helpers/MongoQueryBuilder")
 const {ObjectId} = require("mongodb")
 
-class UsersMongoRepository {
+class SessionsRepository {
   async create (session){
       const sessionsCollection = await MongoHelper.getCollection('sessions')
       await sessionsCollection.insertOne({...session, user_id: ObjectId.createFromHexString(session.user_id), createdAt: new Date()})
+  }
+  
+  async loadById (session_id){
+    const sessionsCollection = await MongoHelper.getCollection('sessions')
+    const session = await sessionsCollection.findOne({ _id: ObjectId.createFromHexString(session_id) })
+    return MongoHelper.mapObjectId(session)
+  }
+
+  async update ({session_id, sessionFields}){
+    const sessionsCollection = await MongoHelper.getCollection('sessions')
+    const updatedSession = await sessionsCollection.findOneAndUpdate({
+      _id: ObjectId.createFromHexString(session_id),
+    }, {
+      $set: {
+        bookingDate: new Date(sessionFields.bookingDate),
+        facilities: sessionFields.facilities,
+        updatedAt: new Date()
+      }
+    }, {
+      upsert: true,
+      returnDocument: 'after'
+    })
+    return MongoHelper.mapObjectId(updatedSession)
   }
 
   async loadByUserIdAndDate (user_id, bookedDate){
@@ -55,4 +78,4 @@ class UsersMongoRepository {
   }
 }
   
-module.exports = UsersMongoRepository
+module.exports = SessionsRepository

@@ -10,10 +10,9 @@ const unauthorized = () => ({
   body: new UnauthorizedError()
 })
 
-const forbidden = (e, headers) => ({
+const forbidden = (e) => ({
   statusCode: 403,
   body: e,
-  headers
 })
   
 const notFound = (e) => ({
@@ -27,10 +26,9 @@ const serverError = (e) => ({
 })
   
   
-const noContent = (headers) => ({
+const noContent = () => ({
   statusCode: 204,
   body: null,
-  headers
 })
 
 const success = (data) => ({
