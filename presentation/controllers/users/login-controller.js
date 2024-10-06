@@ -21,6 +21,7 @@ class LoginController{
         
       return success(userCredentials)
     } catch (e) {
+      console.log(e)
       return serverError(e)
     }
   }

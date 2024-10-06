@@ -31,6 +31,11 @@ class SessionsRepository {
     return MongoHelper.mapObjectId(updatedSession)
   }
 
+  async delete (session_id){
+    const sessionsCollection = await MongoHelper.getCollection('sessions')
+     await sessionsCollection.deleteOne({_id: ObjectId.createFromHexString(session_id)})
+  }
+
   async loadByUserIdAndDate (user_id, bookedDate){
     const sessionsCollection = await MongoHelper.getCollection('sessions')
     const session = await sessionsCollection.findOne({ user_id: ObjectId.createFromHexString(user_id), bookingDate: new Date(bookedDate) })
