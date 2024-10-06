@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "node --env-file=.env server.js",
+    "start": "node --env-file=.env src/main/server.js",
     "css:transpile": "npx tailwindcss -i ./view/styles/tailwind.css  -o ./view/assets/styles/styles.css --watch",
-    "dev": "nodemon --env-file=.env server.js"
+    "dev": "nodemon --env-file=.env src/main/server.js"
   },
   "keywords": [],
   "author": "Luis Pellizzon",

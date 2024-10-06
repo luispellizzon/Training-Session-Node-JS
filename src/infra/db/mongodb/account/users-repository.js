@@ -1,4 +1,4 @@
-const MongoHelper = require("../../../helpers/MongoHelper")
+const MongoHelper = require("../helpers/MongoHelper")
 const {ObjectId} = require("mongodb")
 
 class UsersMongoRepository {

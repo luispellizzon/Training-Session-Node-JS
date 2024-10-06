@@ -1,5 +1,5 @@
-const MongoHelper = require("../../../helpers/MongoHelper")
-const MongoQueryBuilder = require("../../../helpers/MongoQueryBuilder")
+const MongoHelper = require("../helpers/MongoHelper")
+const MongoQueryBuilder = require("../helpers/MongoQueryBuilder")
 const {ObjectId} = require("mongodb")
 
 class SessionsRepository {
