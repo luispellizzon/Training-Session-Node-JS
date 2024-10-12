@@ -39,7 +39,6 @@ export function CreateSessionForm() {
   });
 
   const onSubmit: SubmitHandler<CreateSessionSchemaModel> = (data): void => {
-    console.log(data);
     setIsPopoverOpen(false);
     const promise = mutateAsync(data);
     toast.promise(promise, {
@@ -49,12 +48,7 @@ export function CreateSessionForm() {
         return 'New training session created';
       },
       error: (error) => {
-        console.log(error);
-        if (
-          error.response &&
-          error.response.data &&
-          error.response.data.error
-        ) {
+        if (error.response && error.response.data && error.response.data.error) {
           return error.response.data.error.message;
         }
         return 'Error creating training session';
@@ -83,19 +77,14 @@ export function CreateSessionForm() {
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-8 pt-5 relative"
-      >
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 pt-5 relative">
         <FormField
           control={form.control}
           name="bookingDate"
           render={({ field }) => (
             <FormItem className="flex flex-col">
               <FormLabel>Select a Date</FormLabel>
-              <FormDescription>
-                The date you want to create your training session.
-              </FormDescription>
+              <FormDescription>The date you want to create your training session.</FormDescription>
               <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
                 <PopoverTrigger asChild>
                   <Button
@@ -106,11 +95,7 @@ export function CreateSessionForm() {
                     )}
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
-                    {field.value ? (
-                      format(field.value, 'PPP')
-                    ) : (
-                      <span>Pick a date</span>
-                    )}
+                    {field.value ? format(field.value, 'PPP') : <span>Pick a date</span>}
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0" align="center">
@@ -158,17 +143,11 @@ export function CreateSessionForm() {
                             onCheckedChange={(checked) => {
                               return checked
                                 ? field.onChange([...field.value, item.id])
-                                : field.onChange(
-                                    field.value?.filter(
-                                      (value) => value !== item.id
-                                    )
-                                  );
+                                : field.onChange(field.value?.filter((value) => value !== item.id));
                             }}
                           />
                         </FormControl>
-                        <FormLabel className="text-sm font-normal">
-                          {item.label}
-                        </FormLabel>
+                        <FormLabel className="text-sm font-normal">{item.label}</FormLabel>
                       </FormItem>
                     );
                   }}
@@ -179,11 +158,7 @@ export function CreateSessionForm() {
           )}
         />
         <div className="flex">
-          <Button
-            type="submit"
-            disabled={isPending}
-            className="w-[75%] mx-auto"
-          >
+          <Button type="submit" disabled={isPending} className="w-[75%] mx-auto">
             {isPending ? (
               <span className="flex gap-2">
                 <Spinner />

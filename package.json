@@ -4,7 +4,6 @@
   "main": "index.js",
   "scripts": {
     "start": "node --env-file=.env src/main/server.js",
-    "css:transpile": "npx tailwindcss -i ./view/styles/tailwind.css  -o ./view/assets/styles/styles.css --watch",
     "dev": "nodemon --env-file=.env src/main/server.js"
   },
   "keywords": [],
@@ -21,11 +20,8 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.11.1",
-    "autoprefixer": "^10.4.20",
     "eslint": "^9.11.1",
     "globals": "^15.9.0",
-    "postcss": "^8.4.47",
-    "prettier": "^3.3.3",
-    "tailwindcss": "^3.4.13"
+    "prettier": "^3.3.3"
   }
 }

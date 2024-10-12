@@ -1,40 +1,39 @@
-const {UnauthorizedError,ServerError} = require("../errors") 
+const { UnauthorizedError, ServerError } = require('../errors');
 
 const badRequest = (e) => ({
   statusCode: 400,
-  body: e
-})
-  
+  body: e,
+});
+
 const unauthorized = () => ({
   statusCode: 401,
-  body: new UnauthorizedError()
-})
+  body: new UnauthorizedError(),
+});
 
 const forbidden = (e) => ({
   statusCode: 403,
   body: e,
-})
-  
+});
+
 const notFound = (e) => ({
-    statusCode: 404,
-    body: e
-})
-  
+  statusCode: 404,
+  body: e,
+});
+
 const serverError = (e) => ({
   statusCode: 500,
-  body: new ServerError(e.stack)
-})
-  
-  
+  body: new ServerError(e.stack),
+});
+
 const noContent = () => ({
   statusCode: 204,
   body: null,
-})
+});
 
 const success = (data) => ({
   statusCode: 200,
-  body:data
-})
+  body: data,
+});
 
 module.exports = {
   badRequest,
@@ -43,5 +42,5 @@ module.exports = {
   noContent,
   notFound,
   forbidden,
-  unauthorized
-}
+  unauthorized,
+};

@@ -12,7 +12,6 @@ const DashboardNavigation = ({ type }: DashboardNavigationProps) => {
   // } = useFetchUserInformation();
   const { pathname } = useLocation();
   const appLocation: string = pathname.split('/')[3];
-  console.log(appLocation);
   return (
     <>
       <aside className="relative bg-sidebar h-screen w-64 hidden sm:block shadow-xl">

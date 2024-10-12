@@ -1,30 +1,37 @@
-const {badRequest, unauthorized, success, serverError} = require("../../helpers/http-helper")
-class LoginController{
-    #validator
-    #authentication
-  constructor (validator, authentication) {
-    this.#validator = validator
-    this.#authentication = authentication
+const {
+  badRequest,
+  unauthorized,
+  success,
+  serverError,
+} = require('../../helpers/http-helper');
+class LoginController {
+  #validator;
+  #authentication;
+  constructor(validator, authentication) {
+    this.#validator = validator;
+    this.#authentication = authentication;
   }
 
-  async handle (request){
+  async handle(request) {
     try {
-      const error = this.#validator.validate(request.body)
+      const error = this.#validator.validate(request.body);
       if (error) {
-        return badRequest(error)
+        return badRequest(error);
       }
-      const { email, password } = request.body
-      const userCredentials = await this.#authentication.auth({ email, password })
+      const { email, password } = request.body;
+      const userCredentials = await this.#authentication.auth({
+        email,
+        password,
+      });
       if (!userCredentials?.accessToken) {
-        return unauthorized()
+        return unauthorized();
       }
-        
-      return success(userCredentials)
+
+      return success(userCredentials);
     } catch (e) {
-      console.log(e)
-      return serverError(e)
+      return serverError(e);
     }
   }
 }
 
-module.exports = LoginController
+module.exports = LoginController;

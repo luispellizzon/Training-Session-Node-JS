@@ -1,21 +1,20 @@
-const { serverError, success } = require("../../helpers/http-helper")
+const { serverError, success } = require('../../helpers/http-helper');
 
-class GetAllSessions{
-    #loadAllSessions
-  constructor (loadAllSessions) {
-    this.#loadAllSessions = loadAllSessions
+class GetAllSessions {
+  #loadAllSessions;
+  constructor(loadAllSessions) {
+    this.#loadAllSessions = loadAllSessions;
   }
 
   // eslint-disable-next-line no-unused-vars
-  async handle (request) {
+  async handle(request) {
     try {
-      const sessions = await this.#loadAllSessions.loadAll()
-      return success(sessions)
-      
+      const sessions = await this.#loadAllSessions.loadAll();
+      return success(sessions);
     } catch (error) {
-      return serverError(error)
+      return serverError(error);
     }
   }
 }
 
-module.exports = GetAllSessions
+module.exports = GetAllSessions;

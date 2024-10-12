@@ -1,3 +1,3 @@
-const {json} = require('express');
+const { json } = require('express');
 
 module.exports = json();

@@ -24,17 +24,17 @@ class MongoHelper {
   }
 
   static mapObjectId(dataObject) {
-    if (!dataObject) return null
-    const mappedObject = { ...dataObject }
+    if (!dataObject) return null;
+    const mappedObject = { ...dataObject };
     for (const key in mappedObject) {
       if (Object.prototype.hasOwnProperty.call(mappedObject, key)) {
-        const value = mappedObject[key]
+        const value = mappedObject[key];
         if (ObjectId.isValid(value)) {
-          mappedObject[key] = value.toString()
+          mappedObject[key] = value.toString();
         }
       }
     }
-    return mappedObject
+    return mappedObject;
   }
 }
 

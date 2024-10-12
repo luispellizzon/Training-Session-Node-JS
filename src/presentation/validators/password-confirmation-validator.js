@@ -1,16 +1,16 @@
-const {InvalidParamError} = require("../errors")
+const { InvalidParamError } = require('../errors');
 
-class PasswordConfirmationValidator{
-    #fieldName;
-    constructor (fieldName) {
-        this.#fieldName = fieldName
+class PasswordConfirmationValidator {
+  #fieldName;
+  constructor(fieldName) {
+    this.#fieldName = fieldName;
+  }
+
+  validate(obj) {
+    if (obj.password !== obj[this.#fieldName]) {
+      return new InvalidParamError(this.#fieldName);
     }
-  
-    validate (obj) {
-        if (obj.password !== obj[this.#fieldName]) {
-            return new InvalidParamError(this.#fieldName)
-      }
-    }
+  }
 }
 
-module.exports = PasswordConfirmationValidator
+module.exports = PasswordConfirmationValidator;

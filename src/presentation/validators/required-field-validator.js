@@ -1,17 +1,17 @@
-const { MissingParamError } = require("../errors")
+const { MissingParamError } = require('../errors');
 
-class RequiredFieldValidator{
+class RequiredFieldValidator {
   #requiredField;
-  constructor (requiredField) {
-    this.#requiredField = requiredField
+  constructor(requiredField) {
+    this.#requiredField = requiredField;
   }
 
-  validate (input) {
+  validate(input) {
     if (!input[this.#requiredField]?.toString().trim()) {
-      return new MissingParamError(this.#requiredField)
+      return new MissingParamError(this.#requiredField);
     }
-    return null
+    return null;
   }
 }
 
-module.exports = RequiredFieldValidator
+module.exports = RequiredFieldValidator;

@@ -1,17 +1,17 @@
-const {InvalidParamError} = require("../errors")
+const { InvalidParamError } = require('../errors');
 
-class ArrayValidator{
-    #fieldName
-  constructor (fieldName) {
-    this.#fieldName = fieldName
+class ArrayValidator {
+  #fieldName;
+  constructor(fieldName) {
+    this.#fieldName = fieldName;
   }
 
-  validate (params) {
-    const isValid = Array.isArray(params[this.#fieldName])
+  validate(params) {
+    const isValid = Array.isArray(params[this.#fieldName]);
     if (!isValid) {
-      return new InvalidParamError(this.#fieldName)
+      return new InvalidParamError(this.#fieldName);
     }
   }
 }
 
-module.exports = ArrayValidator
+module.exports = ArrayValidator;

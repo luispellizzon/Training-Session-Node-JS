@@ -1,13 +1,12 @@
-
 class DbLoadAllSessions {
-    #loadAllSessionsRepository
-  constructor (loadAllSessionsRepository) {
-    this.#loadAllSessionsRepository = loadAllSessionsRepository
+  #loadAllSessionsRepository;
+  constructor(loadAllSessionsRepository) {
+    this.#loadAllSessionsRepository = loadAllSessionsRepository;
   }
 
-  async loadAll (){
-    return await this.#loadAllSessionsRepository.loadAll()
+  async loadAll() {
+    return await this.#loadAllSessionsRepository.loadAll();
   }
 }
 
-module.exports = DbLoadAllSessions
+module.exports = DbLoadAllSessions;

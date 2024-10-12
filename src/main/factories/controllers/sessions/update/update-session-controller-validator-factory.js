@@ -1,14 +1,17 @@
-const { RequiredFieldValidator, ValidatorComposite } = require("../../../../../presentation/validators")
+const {
+  RequiredFieldValidator,
+  ValidatorComposite,
+} = require('../../../../../presentation/validators');
 
 const updateSessionControllerValidatorFactory = () => {
-    const validators = []
-    const requiredFields = ["bookingDate", "facilities"]
+  const validators = [];
+  const requiredFields = ['bookingDate', 'facilities'];
 
-    for (const requiredField of requiredFields) {
-        validators.push(new RequiredFieldValidator(requiredField))
-    }
-        
-    return new ValidatorComposite(validators)
-}
+  for (const requiredField of requiredFields) {
+    validators.push(new RequiredFieldValidator(requiredField));
+  }
 
-module.exports = updateSessionControllerValidatorFactory
+  return new ValidatorComposite(validators);
+};
+
+module.exports = updateSessionControllerValidatorFactory;

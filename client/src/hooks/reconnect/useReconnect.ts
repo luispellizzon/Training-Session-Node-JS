@@ -5,9 +5,9 @@ import axios from '@/api/axios/axios'
 import { AuthModel } from '@/schemas/types/AuthModel'
 
 const reconnect = async (): Promise<AuthModel> => {
-  const response = await axios.get('/api/me', {
+  const response = await axios.get('api/me', {
     headers: {
-      "Authorization": `Bearer ${localStorage.getItem('token')}`
+      'Authorization': `Bearer ${localStorage.getItem("token")}`
     }
   })
   return response.data as AuthModel

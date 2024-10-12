@@ -1,43 +1,41 @@
-
-class DbAuthentication{
-    #loadAccountByEmailRepository;
-    #hashComparer
-    #encrypter
-  constructor (
-    loadAccountByEmailRepository,
-    hashComparer,
-    encrypter
-  ) {
-    this.#loadAccountByEmailRepository = loadAccountByEmailRepository
-    this.#hashComparer = hashComparer
-    this.#encrypter = encrypter
+class DbAuthentication {
+  #loadAccountByEmailRepository;
+  #hashComparer;
+  #encrypter;
+  constructor(loadAccountByEmailRepository, hashComparer, encrypter) {
+    this.#loadAccountByEmailRepository = loadAccountByEmailRepository;
+    this.#hashComparer = hashComparer;
+    this.#encrypter = encrypter;
   }
 
-  async auth (authCredentials){
-    const { email, password } = authCredentials
-    const account = await this.#loadAccountByEmailRepository.loadByEmail(email)
+  async auth(authCredentials) {
+    const { email, password } = authCredentials;
+    const account = await this.#loadAccountByEmailRepository.loadByEmail(email);
     if (!account) {
-      return null
+      return null;
     }
 
-    const isPasswordValid = await this.#hashComparer.compare(password, account.password)
+    const isPasswordValid = await this.#hashComparer.compare(
+      password,
+      account.password
+    );
     if (!isPasswordValid) {
-      return null
+      return null;
     }
 
     const accessToken = await this.#encrypter.encrypt({
       user_id: account._id,
-      role: account.role
-    })
+      role: account.role,
+    });
 
-    delete account.password
+    delete account.password;
 
     const userCredentials = {
       ...account,
-      accessToken
-    }
-    return userCredentials
+      accessToken,
+    };
+    return userCredentials;
   }
 }
 
-module.exports = DbAuthentication
+module.exports = DbAuthentication;
