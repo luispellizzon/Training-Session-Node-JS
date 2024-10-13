@@ -1,9 +1,4 @@
-const {
-  badRequest,
-  serverError,
-  noContent,
-  forbidden,
-} = require('../../helpers/http-helper');
+const { badRequest, serverError, success, forbidden } = require('../../helpers/http-helper');
 const { AlreadyExistsError } = require('../../errors');
 
 class RegisterUserController {
@@ -26,7 +21,7 @@ class RegisterUserController {
         return forbidden(new AlreadyExistsError('email'));
       }
 
-      return noContent();
+      return success(account);
     } catch (error) {
       return serverError(error);
     }

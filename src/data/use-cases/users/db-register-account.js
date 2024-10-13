@@ -2,17 +2,17 @@ class DbRegisterAccount {
   #role = 'user';
   #loadAccountByEmailRepository;
   #hasher;
+  #encrypter;
   #registerAccountRepository;
-  constructor(loadAccountByEmailRepository, hasher, registerAccountRepository) {
+  constructor(loadAccountByEmailRepository, hasher, encrypter, registerAccountRepository) {
     this.#loadAccountByEmailRepository = loadAccountByEmailRepository;
     this.#hasher = hasher;
+    this.#encrypter = encrypter;
     this.#registerAccountRepository = registerAccountRepository;
   }
 
   async register(accountData) {
-    const isAccount = await this.#loadAccountByEmailRepository.loadByEmail(
-      accountData.email
-    );
+    const isAccount = await this.#loadAccountByEmailRepository.loadByEmail(accountData.email);
     if (isAccount) {
       return null;
     }
@@ -26,7 +26,12 @@ class DbRegisterAccount {
       createdAt: new Date(),
     });
 
-    return account;
+    const accessToken = await this.#encrypter.encrypt({
+      user_id: account._id,
+      role: account.role,
+    });
+
+    return { ...account, accessToken };
   }
 }
 

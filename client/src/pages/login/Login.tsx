@@ -2,8 +2,11 @@ import LoginForm from '@/components/customs/forms/login/LoginForm';
 import HeroImage from '@/assets/hero.png';
 import { ArrowRight } from 'lucide-react';
 import { LoginModal } from '@/components/customs/modals/LoginModal';
+import RegistrationForm from '@/components/customs/forms/registration/RegistrationForm';
+import { useState } from 'react';
 
 export const Login = () => {
+  const [userAction, setUserAction] = useState<string>('sign-in');
   return (
     <section
       id="login"
@@ -23,8 +26,7 @@ export const Login = () => {
               </p>
               <p className="flex items-center gap-2 text-sm">
                 <ArrowRight className="inline-block" size={12} />
-                Choose a range of facilities that best suits your training
-                session.
+                Choose a range of facilities that best suits your training session.
               </p>
               <p className="flex items-center gap-2 text-sm">
                 <ArrowRight className="inline-block" size={12} />
@@ -32,13 +34,12 @@ export const Login = () => {
               </p>
             </div>
             <img src={HeroImage} alt="Hero image" className="w-[500px]" />
-            <p className="text-xs italic text-center">
-              MTU Fitness Training Session
-            </p>
+            <p className="text-xs italic text-center">MTU Fitness Training Session</p>
           </div>
         </div>
-        <div className="bg-white flex-auto flex items-center px-5 justify-center md:min-w-[350px]">
-          <LoginForm />
+        <div className="bg-white flex-auto flex items-center px-5 py-4 justify-center md:min-w-[350px]">
+          {userAction === 'sign-in' && <LoginForm setUserAction={setUserAction} />}
+          {userAction === 'sign-up' && <RegistrationForm setUserAction={setUserAction} />}
         </div>
       </div>
 
@@ -56,25 +57,18 @@ export const Login = () => {
               </p>
               <p className="flex items-center gap-2 text-sm">
                 <ArrowRight className="inline-block" size={12} />
-                Choose a range of facilities that best suits your training
-                session.
+                Choose a range of facilities that best suits your training session.
               </p>
               <p className="flex items-center gap-2 text-sm">
                 <ArrowRight className="inline-block" size={12} />
                 Get ready to be a better version of yourself.
               </p>
             </div>
-            <img
-              src={HeroImage}
-              alt="Hero image"
-              className="w-[500px] relative left-[-10px]"
-            />
+            <img src={HeroImage} alt="Hero image" className="w-[500px] relative left-[-10px]" />
             <div className="w-[75%]">
               <LoginModal />
             </div>
-            <p className="text-xs italic text-center pt-4">
-              MTU Fitness Training Session
-            </p>
+            <p className="text-xs italic text-center pt-4">MTU Fitness Training Session</p>
           </div>
         </div>
       </div>

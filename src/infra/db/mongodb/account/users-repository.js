@@ -6,7 +6,7 @@ class UsersMongoRepository {
   async register(credentials) {
     const usersCollection = await MongoHelper.getCollection('users');
     const { insertedId } = await usersCollection.insertOne(credentials);
-    const user = { _id: insertedId.toString(), ...credentials };
+    const user = MongoHelper.mapObjectId({ _id: insertedId.toString(), ...credentials });
     return user;
   }
 

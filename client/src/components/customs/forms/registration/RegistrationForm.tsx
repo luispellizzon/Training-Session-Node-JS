@@ -19,55 +19,75 @@ import { Button } from '@/components/ui/button';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
-import { useLogin } from '@/hooks/login/useLogin';
-import { LoginModel, loginSchema } from '@/schemas/login/loginSchema';
 import { Spinner } from '../../spinner/Spinner';
 import { useNavigate } from 'react-router-dom';
+import { RegistrationModel, registrationSchema } from '@/schemas/registration/registrationSchema';
+import { useRegistration } from '@/hooks/reconnect/useRegistration';
 
-type LoginFormProps = {
+type RegistrationForm = {
   setUserAction: React.Dispatch<React.SetStateAction<string>>;
 };
-export default function LoginForm({ setUserAction }: LoginFormProps) {
-  const { mutateAsync, isPending, isError } = useLogin();
+export default function RegistrationForm({ setUserAction }: RegistrationForm) {
+  const { mutateAsync, isPending, isError, error } = useRegistration();
   const navigate = useNavigate();
-  const form = useForm<LoginModel>({
-    resolver: zodResolver(loginSchema),
+  const form = useForm<RegistrationModel>({
+    resolver: zodResolver(registrationSchema),
     defaultValues: {
+      username: '',
       email: '',
       password: '',
+      passwordConfirmation: '',
     },
   });
 
-  const onSubmit: SubmitHandler<LoginModel> = async (data): Promise<void> => {
+  const onSubmit: SubmitHandler<RegistrationModel> = async (data): Promise<void> => {
     const promise = mutateAsync({
+      username: data.username,
       email: data.email,
       password: data.password,
+      passwordConfirmation: data.passwordConfirmation,
     });
     toast.promise(promise, {
-      loading: 'Checking your credentials...',
+      loading: 'Registering your details...',
       success: () => {
         form.reset();
         navigate('/auth');
-        return 'You are logged in!';
+        return 'Welcome new user, you were successfully registered!';
       },
       error: () => {
-        return 'Invalid Username or Password';
+        return 'Server Error';
       },
     });
   };
+
   return (
     <Card className="mx-auto max-w-full">
       <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl font-bold">Sign In</CardTitle>
-        <CardDescription>Enter your email and password to login to your account.</CardDescription>
+        <CardTitle className="text-2xl font-bold">Sign Up</CardTitle>
+        <CardDescription>Enter the following details below to create an account.</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
           {isError && (
-            <p className="text-destructive text-center font-medium">Invalid Username or Password</p>
+            <p className="text-destructive text-center font-medium">
+              {error !== null && error.message}
+            </p>
           )}
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <div className="space-y-4 pb-4">
+              <FormField
+                control={form.control}
+                name="username"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Name</FormLabel>
+                    <FormControl>
+                      <Input disabled={isPending} placeholder="Enter your Name" {...field} />
+                    </FormControl>
+                    <FormMessage className="italic font-normal" />
+                  </FormItem>
+                )}
+              />
               <FormField
                 control={form.control}
                 name="email"
@@ -89,10 +109,28 @@ export default function LoginForm({ setUserAction }: LoginFormProps) {
                     <FormLabel>Password</FormLabel>
                     <FormControl>
                       <Input
-                        disabled={isPending}
-                        placeholder="Enter your password"
-                        {...field}
                         type="password"
+                        disabled={isPending}
+                        placeholder="Enter your New Password"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage className="italic font-normal" />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="passwordConfirmation"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Confirm Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="password"
+                        disabled={isPending}
+                        placeholder="Confirm your Password"
+                        {...field}
                       />
                     </FormControl>
                     <FormMessage className="italic font-normal" />
@@ -108,19 +146,19 @@ export default function LoginForm({ setUserAction }: LoginFormProps) {
                     {'Checking credentials...'}
                   </>
                 ) : (
-                  'Login'
+                  'Submit'
                 )}
               </Button>
             </div>
           </form>
         </Form>
         <CardFooter className="flex text-sm flex-row justify-center p-0 pt-2 m-0 gap-1">
-          Not registered?
+          Have an account?
           <p
             className={`text-gray-500 underline hover:text-gray-400 cursor-pointer `}
-            onClick={() => setUserAction('sign-up')}
+            onClick={() => setUserAction('sign-in')}
           >
-            Create an account
+            Sign In
           </p>
         </CardFooter>
       </CardContent>

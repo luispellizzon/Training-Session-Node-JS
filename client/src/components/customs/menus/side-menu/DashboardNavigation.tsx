@@ -17,7 +17,7 @@ const DashboardNavigation = ({ type }: DashboardNavigationProps) => {
         {/* RENDER TYPE OF NAVIGATION FOR EACH TYPE OF USER */}
         <div className="p-6">
           <p className="text-white text-3xl font-semibold uppercase hover:text-gray-300">
-            {user?.username}
+            {user?.username.split(' ')[0]}
           </p>
           <BookNewTrainingSessionModal />
         </div>
