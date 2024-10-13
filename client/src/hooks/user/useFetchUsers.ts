@@ -13,6 +13,9 @@ const fetchUsers = async (dates: DateRangeInputs) => {
   const response = await axios.get('/api/users', {
     params: {
       ...dates
+    },
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
     }
   })
   return response.data as UserModel[]
@@ -23,7 +26,7 @@ const refreshDate = () => {
   const end = new Date()
   return {
     startDate: `${start.getFullYear()}-${start.getMonth()}-${start.getDate()}`,
-    endDate: `${end.getFullYear()}-${end.getMonth() + 1}-${end.getDate() + 1}`
+  endDate: `${end.getFullYear()}-${end.getMonth() + 1}-${end.getDate() + 1}`
   }
 }
 

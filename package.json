@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node --env-file=.env src/main/server.js",
-    "dev": "nodemon --env-file=.env src/main/server.js"
+    "dev": "concurrently \"nodemon --env-file=.env src/main/server.js\" \"cd client && npm run dev\""
   },
   "keywords": [],
   "author": "Luis Pellizzon",
@@ -20,6 +20,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.11.1",
+    "concurrently": "^9.0.1",
     "eslint": "^9.11.1",
     "globals": "^15.9.0",
     "prettier": "^3.3.3"

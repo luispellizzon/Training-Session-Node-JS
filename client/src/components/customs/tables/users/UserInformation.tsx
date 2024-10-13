@@ -19,20 +19,16 @@ export function UserInformation({ user }: UserInformationProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-          View Information
-        </DropdownMenuItem>
+        <DropdownMenuItem onSelect={(e) => e.preventDefault()}>View Information</DropdownMenuItem>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>User Information</DialogTitle>
-          <DialogDescription>
-            Below you can find the following user information:
-          </DialogDescription>
+          <DialogDescription>Below you can find the following user information:</DialogDescription>
         </DialogHeader>
         <ul className="text-base flex flex-col gap-2">
           <li className="font-bold">
-            Name: <span className="font-normal pl-2">{user.name}</span>
+            Name: <span className="font-normal pl-2">{user.username}</span>
           </li>
           <li className="font-bold">
             Email: <span className="font-normal pl-2">{user.email}</span>

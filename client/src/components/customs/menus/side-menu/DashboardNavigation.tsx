@@ -1,15 +1,14 @@
-// import useFetchUserInformation from '@/hooks/user/useFetchUserInformation';
 import { ListIcon, LineChart, UsersIcon } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { BookNewTrainingSessionModal } from '../../modals/BookNewTrainingSessionModal';
+import { useQueryClient } from '@tanstack/react-query';
+import { AuthModel } from '@/schemas/types/AuthModel';
 
 type DashboardNavigationProps = {
   type: 'user' | 'admin';
 };
 const DashboardNavigation = ({ type }: DashboardNavigationProps) => {
-  // const {
-  //   query: { data },
-  // } = useFetchUserInformation();
+  const user = useQueryClient().getQueryData<AuthModel>(['auth']);
   const { pathname } = useLocation();
   const appLocation: string = pathname.split('/')[3];
   return (
@@ -18,7 +17,7 @@ const DashboardNavigation = ({ type }: DashboardNavigationProps) => {
         {/* RENDER TYPE OF NAVIGATION FOR EACH TYPE OF USER */}
         <div className="p-6">
           <p className="text-white text-3xl font-semibold uppercase hover:text-gray-300">
-            NAME HERE
+            {user?.username}
           </p>
           <BookNewTrainingSessionModal />
         </div>

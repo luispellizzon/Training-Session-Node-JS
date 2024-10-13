@@ -1,6 +1,16 @@
 class MongoQueryBuilder {
   #query = [];
 
+  match(data) {
+    this.#query.push({ $match: data });
+    return this;
+  }
+
+  lookup(data) {
+    this.#query.push({ $lookup: data });
+    return this;
+  }
+
   group(data) {
     this.#query.push({ $group: data });
     return this;

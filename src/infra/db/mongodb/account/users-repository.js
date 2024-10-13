@@ -1,4 +1,5 @@
 const MongoHelper = require('../helpers/MongoHelper');
+const MongoQueryBuilder = require('../helpers/MongoQueryBuilder');
 const { ObjectId } = require('mongodb');
 
 class UsersMongoRepository {
@@ -21,6 +22,48 @@ class UsersMongoRepository {
       _id: ObjectId.createFromHexString(user_id),
     });
     return MongoHelper.mapObjectId(user);
+  }
+
+  async loadByDateRange(startDate, endDate) {
+    const collection = await MongoHelper.getCollection('users');
+    const query = new MongoQueryBuilder()
+      .match({
+        role: 'user',
+        createdAt: {
+          $gte: new Date(startDate),
+          $lte: new Date(endDate),
+        },
+      })
+      .lookup({
+        from: 'sessions',
+        foreignField: 'user_id',
+        localField: '_id',
+        as: 'sessions',
+      })
+      .project({
+        _id: 0,
+        user_id: { $toString: '$_id' },
+        username: '$username',
+        email: '$email',
+        createdAt: '$createdAt',
+        sessions: {
+          $map: {
+            input: '$sessions',
+            as: 'session',
+            in: {
+              bookingDate: '$$session.bookingDate',
+              facilities: '$$session.facilities',
+              session_id: { $toString: '$$session._id' },
+              createdAt: '$$session.createdAt',
+            },
+          },
+        },
+      })
+      .sort({ createdAt: -1 })
+      .build();
+
+    const users = await collection.aggregate(query).toArray();
+    return users;
   }
 }
 

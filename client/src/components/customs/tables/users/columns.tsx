@@ -14,7 +14,7 @@ import { UserModel } from '@/schemas/types/UserModel';
 
 export const columns: ColumnDef<UserModel>[] = [
   {
-    accessorKey: 'name',
+    accessorKey: 'username',
     header: 'Name',
   },
   {
