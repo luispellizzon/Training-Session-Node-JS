@@ -7,7 +7,7 @@ class SessionsRepository {
     const sessionsCollection = await MongoHelper.getCollection('sessions');
     await sessionsCollection.insertOne({
       ...session,
-      user_id: ObjectId.createFromHexString(session.user_id),
+      user_id: session.user_id,
       createdAt: new Date(),
     });
   }
@@ -51,7 +51,7 @@ class SessionsRepository {
   async loadByUserIdAndDate(user_id, bookedDate) {
     const sessionsCollection = await MongoHelper.getCollection('sessions');
     const session = await sessionsCollection.findOne({
-      user_id: ObjectId.createFromHexString(user_id),
+      user_id,
       bookingDate: new Date(bookedDate),
     });
     return MongoHelper.mapObjectId(session);
@@ -59,9 +59,7 @@ class SessionsRepository {
 
   async loadByUserId(user_id) {
     const sessionsCollection = await MongoHelper.getCollection('sessions');
-    const sessions = await sessionsCollection
-      .find({ user_id: ObjectId.createFromHexString(user_id) })
-      .toArray();
+    const sessions = await sessionsCollection.find({ user_id }).toArray();
     return sessions.map((session) => MongoHelper.mapObjectId(session));
   }
 

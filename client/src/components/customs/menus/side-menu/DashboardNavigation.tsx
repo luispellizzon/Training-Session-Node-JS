@@ -15,10 +15,11 @@ const DashboardNavigation = ({ type }: DashboardNavigationProps) => {
     <>
       <aside className="relative bg-sidebar h-screen w-64 hidden sm:block shadow-xl">
         {/* RENDER TYPE OF NAVIGATION FOR EACH TYPE OF USER */}
-        <div className="p-6">
-          <p className="text-white text-3xl font-semibold uppercase hover:text-gray-300">
+        <div className="p-6 text-white flex flex-col">
+          <p className="text-3xl font-semibold uppercase hover:text-gray-300">
             {user?.username.split(' ')[0]}
           </p>
+          <span className="text-sm">ID: {user?._id}</span>
           <BookNewTrainingSessionModal />
         </div>
         <nav className="text-white text-base font-semibold pt-3">

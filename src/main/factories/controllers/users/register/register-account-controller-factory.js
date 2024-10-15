@@ -1,6 +1,7 @@
 const BcryptAdapter = require('../../../../../infra/cryptography/bcrypt/bcrypt-adapter');
 const JwtAdapter = require('../../../../../infra/cryptography/jwt/jwt-adapter');
 const UsersRepository = require('../../../../../infra/db/mongodb/account/users-repository');
+const IdGenerator = require('../../../../../infra/generator/id-generator');
 const DbRegisterAccount = require('../../../../../data/use-cases/users/db-register-account');
 const registerAccountValidatorFactory = require('./register-account-controller-validator-factory');
 const RegisterUserController = require('../../../../../presentation/controllers/users/register-controller');
@@ -9,11 +10,13 @@ const registerAccountControllerFactory = () => {
   const loadAccountByEmailRepository = new UsersRepository();
   const hasher = new BcryptAdapter();
   const encrypter = new JwtAdapter(process.env.JWT_SECRET);
+  const idGenerator = new IdGenerator();
   const registerAccountRepository = new UsersRepository();
   const registerAccountUseCase = new DbRegisterAccount(
     loadAccountByEmailRepository,
     hasher,
     encrypter,
+    idGenerator,
     registerAccountRepository
   );
   const validators = registerAccountValidatorFactory();

@@ -1,27 +1,26 @@
 const MongoHelper = require('../helpers/MongoHelper');
 const MongoQueryBuilder = require('../helpers/MongoQueryBuilder');
-const { ObjectId } = require('mongodb');
 
 class UsersMongoRepository {
   async register(credentials) {
     const usersCollection = await MongoHelper.getCollection('users');
     const { insertedId } = await usersCollection.insertOne(credentials);
-    const user = MongoHelper.mapObjectId({ _id: insertedId.toString(), ...credentials });
+    const user = { _id: insertedId.toString(), ...credentials };
     return user;
   }
 
   async loadByEmail(email) {
     const usersCollection = await MongoHelper.getCollection('users');
     const user = await usersCollection.findOne({ email });
-    return MongoHelper.mapObjectId(user);
+    return user;
   }
 
   async loadById(user_id) {
     const usersCollection = await MongoHelper.getCollection('users');
     const user = await usersCollection.findOne({
-      _id: ObjectId.createFromHexString(user_id),
+      _id: user_id,
     });
-    return MongoHelper.mapObjectId(user);
+    return user;
   }
 
   async loadByDateRange(startDate, endDate) {
