@@ -10,7 +10,7 @@ export const createSessionSchema = z.object({
     return userDate.getDate() > currentDate.getDate() - 1
   }, { message: "Booking date must be in the future." }),
   facilities: z
-    .array(z.enum(['Gym', 'Pool', 'Yoga', 'Spa']))
+    .array(z.enum(['Gym', 'Pool', 'Yoga', 'Spa', "Sauna"]))
     .min(1, { message: "At least one facility must be selected." }),
   cardNumber: z.string().regex(/^\d{16}$/, "Card number must be 16 digits"),
   cvv: z.string().regex(/^\d{3,4}$/, "CVV must be 3 or 4 digits").refine((cvv) => cvv !== "000", { message: "CVV must be valid" }),

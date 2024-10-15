@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { Button } from '@/components/ui/button';
+import { useEditSession } from '@/hooks/session/useEditSession';
+import { SessionModel } from '@/schemas/types/SessionModel';
 import {
   Form,
   FormControl,
@@ -11,13 +11,9 @@ import {
 } from '@/components/ui/form';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
-import {
-  CreateSessionSchemaModel,
-  createSessionSchema,
-} from '@/schemas/session/createSessionSchema';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useCreateSession } from '@/hooks/session/useCreateSession';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Popover, PopoverTrigger } from '@/components/ui/popover';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
@@ -26,23 +22,23 @@ import { Calendar } from '@/components/ui/calendar';
 import { CalendarIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Spinner } from '../../spinner/Spinner';
-import { Input } from '@/components/ui/input';
 import React, { SetStateAction, useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { EditSessionModel, editSessionSchema } from '@/schemas/session/editSessionSchema';
 
-type CreateSessionFormProps = {
-  setOpenModal: React.Dispatch<SetStateAction<boolean>>;
+type EditSessionFormProps = {
+  session: SessionModel;
+  setEditButtonOpen: React.Dispatch<SetStateAction<boolean>>;
 };
-export function CreateSessionForm({ setOpenModal }: CreateSessionFormProps) {
-  const { mutateAsync, isPending } = useCreateSession();
+
+export const EditSessionForm = ({ session, setEditButtonOpen }: EditSessionFormProps) => {
+  const { mutateAsync, isPending } = useEditSession();
   const [alreadyBookedError, setAlreadyBookedError] = useState<string>();
-  const form = useForm<CreateSessionSchemaModel>({
-    resolver: zodResolver(createSessionSchema),
+  const form = useForm<EditSessionModel>({
+    resolver: zodResolver(editSessionSchema),
     defaultValues: {
-      bookingDate: undefined,
-      facilities: [],
-      cardNumber: '',
-      cvv: '',
-      expiryDate: '',
+      bookingDate: new Date(session.bookingDate),
+      facilities: session.facilities,
     },
   });
 
@@ -66,21 +62,23 @@ export function CreateSessionForm({ setOpenModal }: CreateSessionFormProps) {
     form.setValue('bookingDate', newDate);
   }
 
-  const onSubmit: SubmitHandler<CreateSessionSchemaModel> = (data): void => {
-    const promise = mutateAsync(data);
+  const onSubmit: SubmitHandler<EditSessionModel> = (data): void => {
+    const sessionEdits = data;
+
+    const promise = mutateAsync({ session, sessionEdits });
     toast.promise(promise, {
-      loading: 'Creating a new training session...',
+      loading: 'Updating training session...',
       success: () => {
         form.reset();
-        setOpenModal(false);
-        return 'New training session created';
+        setEditButtonOpen(false);
+        return 'Training session updated!';
       },
       error: (error) => {
         if (error.response && error.response.data && error.response.data.error) {
           setAlreadyBookedError(error.response.data.error.message);
           return error.response.data.error.message;
         }
-        return 'Error creating training session';
+        return 'Error updating training session';
       },
     });
   };
@@ -103,17 +101,16 @@ export function CreateSessionForm({ setOpenModal }: CreateSessionFormProps) {
       label: 'Spa',
     },
   ] as const;
-
   return (
     <Form {...form}>
       {<p className="text-red-500 text-lg text-center">{alreadyBookedError}</p>}
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 pt-5 relative">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 relative">
         <FormField
           control={form.control}
           name="bookingDate"
           render={({ field }) => (
             <FormItem className="flex flex-col">
-              <FormLabel>Enter your date & time (24h)</FormLabel>
+              <FormLabel className="text-base">Enter your date & time (24h)</FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
                   <FormControl>
@@ -192,7 +189,10 @@ export function CreateSessionForm({ setOpenModal }: CreateSessionFormProps) {
                   </div>
                 </PopoverContent>
               </Popover>
-              <FormDescription>Please select your preferred date and time.</FormDescription>
+              <FormDescription>
+                Please select your <span className="font-semibold">NEW</span> preferred date and
+                time.
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -205,7 +205,8 @@ export function CreateSessionForm({ setOpenModal }: CreateSessionFormProps) {
               <div className="mb-4">
                 <FormLabel className="text-base">Facilities</FormLabel>
                 <FormDescription>
-                  Select the facilities you want to book your training session.
+                  Select the <span className="font-semibold">NEW</span> facilities you want to book
+                  your training session.
                 </FormDescription>
               </div>
               {items.map((item) => (
@@ -239,62 +240,19 @@ export function CreateSessionForm({ setOpenModal }: CreateSessionFormProps) {
             </FormItem>
           )}
         />
-        <div className="flex flex-col gap-2">
-          <FormField
-            control={form.control}
-            name="cardNumber"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Card Number</FormLabel>
-                <FormControl>
-                  <Input disabled={isPending} placeholder="1234 1234 1234 1234" {...field} />
-                </FormControl>
-                <FormMessage className="italic font-normal" />
-              </FormItem>
-            )}
-          />
-          <div className="flex flex-row justify-between">
-            <FormField
-              control={form.control}
-              name="expiryDate"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Expiration Date</FormLabel>
-                  <FormControl>
-                    <Input disabled={isPending} placeholder="MM/YY" {...field} />
-                  </FormControl>
-                  <FormMessage className="italic font-normal" />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="cvv"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>CVV</FormLabel>
-                  <FormControl>
-                    <Input disabled={isPending} placeholder="123" {...field} />
-                  </FormControl>
-                  <FormMessage className="italic font-normal" />
-                </FormItem>
-              )}
-            />
-          </div>
-        </div>
         <div className="flex">
           <Button type="submit" disabled={isPending} className="w-[75%] mx-auto">
             {isPending ? (
               <span className="flex gap-2">
                 <Spinner />
-                {'Creating new training session...'}
+                {'Updating training session...'}
               </span>
             ) : (
-              'Create New Session'
+              'Update Training Session'
             )}
           </Button>
         </div>
       </form>
     </Form>
   );
-}
+};

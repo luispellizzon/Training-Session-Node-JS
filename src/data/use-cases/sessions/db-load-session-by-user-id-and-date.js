@@ -1,8 +1,7 @@
 class DbLoadSessionByUserIdAndDate {
   #loadSessionByUserIdAndDateRepository;
   constructor(loadSessionByUserIdAndDateRepository) {
-    this.#loadSessionByUserIdAndDateRepository =
-      loadSessionByUserIdAndDateRepository;
+    this.#loadSessionByUserIdAndDateRepository = loadSessionByUserIdAndDateRepository;
   }
 
   async loadByUserIdAndDate(user_id, bookedDate) {

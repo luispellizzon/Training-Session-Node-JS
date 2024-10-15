@@ -12,22 +12,24 @@ import { CheckCircle, Edit, Trash2Icon } from 'lucide-react';
 import { useState } from 'react';
 import { useDeleteSession } from '@/hooks/session/useDeleteSession';
 import { toast } from 'sonner';
+import { EditSessionForm } from '../forms/edit-session/EditSessionForm';
 
 type SessionCardProps = {
   session: SessionModel;
 };
 export const SessionCard = ({ session }: SessionCardProps) => {
-  const [open, setOpen] = useState(false);
+  const [deleteButtonOpen, setDeleteButtonOpen] = useState(false);
+  const [editButtonOpen, setEditButtonOpen] = useState(false);
   const { mutateAsync, isPending } = useDeleteSession();
   const sessionDate = new Date(session.bookingDate);
   const sessionTime = `${sessionDate.getHours() > 9 ? sessionDate.getHours() : '0' + sessionDate.getHours()}:${sessionDate.getMinutes() < 9 ? '0' + sessionDate.getMinutes() : sessionDate.getMinutes()}`;
 
-  const handleOnClick = () => {
+  const handleOnDeleteClick = () => {
     const promise = mutateAsync(session._id);
     toast.promise(promise, {
-      loading: 'Creating a new training session...',
+      loading: 'Deleting training session...',
       success: () => {
-        setOpen(false);
+        setDeleteButtonOpen(false);
         return 'Training session deleted!';
       },
       error: (error) => {
@@ -60,14 +62,30 @@ export const SessionCard = ({ session }: SessionCardProps) => {
         ))}
       </ul>
       <div className="flex flex-row justify-end gap-2">
-        <Button
-          variant={'default'}
-          className="flex flex-row gap-1 text-xs bg-blue-500 hover:bg-blue-700"
-        >
-          <Edit size={20} />
-          Edit
-        </Button>
-        <Dialog open={open} onOpenChange={setOpen}>
+        {/* EDIT ACTION*/}
+        <Dialog open={editButtonOpen} onOpenChange={setEditButtonOpen}>
+          <DialogTrigger asChild>
+            <Button
+              variant={'default'}
+              className="flex flex-row gap-1 text-xs bg-blue-500 hover:bg-blue-700"
+            >
+              <Edit size={20} />
+              Edit
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Edit Your Training Session</DialogTitle>
+              <DialogDescription>
+                Want to change anything on your training session? Select your new training session
+                details below and click confirm.
+              </DialogDescription>
+            </DialogHeader>
+            <EditSessionForm session={session} setEditButtonOpen={setEditButtonOpen} />
+          </DialogContent>
+        </Dialog>
+        {/* DELETE ACTION*/}
+        <Dialog open={deleteButtonOpen} onOpenChange={setDeleteButtonOpen}>
           <DialogTrigger asChild>
             <Button variant={'destructive'} className="flex flex-row gap-1 text-xs">
               <Trash2Icon size={20} />
@@ -80,10 +98,10 @@ export const SessionCard = ({ session }: SessionCardProps) => {
               <DialogDescription>This action cannot be undone.</DialogDescription>
             </DialogHeader>
             <div className="flex flex-row justify-end gap-2">
-              <Button variant={'destructive'} type="button" onClick={handleOnClick}>
+              <Button variant={'destructive'} type="button" onClick={handleOnDeleteClick}>
                 {isPending ? 'Deleting training session...' : 'Delete'}
               </Button>
-              <Button variant={'default'} type="button" onClick={() => setOpen(false)}>
+              <Button variant={'default'} type="button" onClick={() => setDeleteButtonOpen(false)}>
                 Cancel
               </Button>
             </div>

@@ -1,18 +1,15 @@
-const {
-  badRequest,
-  serverError,
-  success,
-  forbidden,
-} = require('../../helpers/http-helper');
-const { InvalidParamError, AccessDeniedError } = require('../../errors');
+const { badRequest, serverError, success, forbidden } = require('../../helpers/http-helper');
+const { InvalidParamError, AccessDeniedError, SessionAlreadyExistsError } = require('../../errors');
 
 class UpdateSessionByUserIdController {
   #validator;
   #loadSessionById;
+  #loadSessionByUserIdAndDate;
   #updateSession;
-  constructor(validator, loadSessionById, updateSession) {
+  constructor(validator, loadSessionById, loadSessionByUserIdAndDate, updateSession) {
     this.#validator = validator;
     this.#loadSessionById = loadSessionById;
+    this.#loadSessionByUserIdAndDate = loadSessionByUserIdAndDate;
     this.#updateSession = updateSession;
   }
 
@@ -27,9 +24,19 @@ class UpdateSessionByUserIdController {
 
       if (!isSession) return forbidden(new InvalidParamError('survey_id'));
 
-      if (isSession.user_id !== user_id)
-        return forbidden(new AccessDeniedError());
+      if (isSession.user_id !== user_id) return forbidden(new AccessDeniedError());
       const error = this.#validator.validate(sessionFields);
+      if (
+        new Date(isSession.bookingDate).getTime() !== new Date(sessionFields.bookingDate).getTime()
+      ) {
+        const isBookingExists = await this.#loadSessionByUserIdAndDate.loadByUserIdAndDate(
+          user_id,
+          sessionFields.bookingDate
+        );
+        if (isBookingExists) {
+          return forbidden(new SessionAlreadyExistsError());
+        }
+      }
 
       if (error) {
         return badRequest(error);
