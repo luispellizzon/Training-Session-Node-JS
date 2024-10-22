@@ -26,6 +26,9 @@ class UpdateSessionByUserIdController {
 
       if (isSession.user_id !== user_id) return forbidden(new AccessDeniedError());
       const error = this.#validator.validate(sessionFields);
+      if (error) {
+        return badRequest(error);
+      }
       if (
         new Date(isSession.bookingDate).getTime() !== new Date(sessionFields.bookingDate).getTime()
       ) {

@@ -5,6 +5,7 @@ const registerUserControllerFactory = require('../factories/controllers/users/re
 const loginByAccessTokenControllerFactory = require('../factories/controllers/users/login/login-by-access-token-factory');
 const authMiddlewareFactory = require('../factories/middlewares/auth/auth-middleware-factory');
 const getUsersByDateRangeControllerFactory = require('../factories/controllers/users/get-users/get-users-by-date-range-controller-factory');
+const getSessionsByUserIdAndDateRangeControllerFactory = require('../factories/controllers/sessions/get/get-sessions-by-user-id-and-date-range-controller-factory');
 
 module.exports = (router) => {
   router.post('/login', expressRouterAdapter(loginControllerFactory()));
@@ -18,5 +19,9 @@ module.exports = (router) => {
     '/users',
     expressMiddlewareAdapter(authMiddlewareFactory('admin')),
     expressRouterAdapter(getUsersByDateRangeControllerFactory())
+  );
+  router.post(
+    '/user/:user_id/sessions',
+    expressRouterAdapter(getSessionsByUserIdAndDateRangeControllerFactory())
   );
 };

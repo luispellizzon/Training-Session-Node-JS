@@ -1,12 +1,9 @@
 import axios from '@/api/axios/axios'
+import { DateRangeInputs } from '@/schemas/types/DateRangeInputs'
 import { UserModel } from '@/schemas/types/UserModel'
 import { UseQueryResult, useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 
-export type DateRangeInputs = {
-  startDate: string | undefined,
-  endDate: string | undefined
-}
 
 const fetchUsers = async (dates: DateRangeInputs) => {
   if (!dates.startDate || !dates.endDate) throw new Error('Date range is not set')
@@ -26,7 +23,7 @@ const refreshDate = () => {
   const end = new Date()
   return {
     startDate: `${start.getFullYear()}-${start.getMonth()}-${start.getDate()}`,
-  endDate: `${end.getFullYear()}-${end.getMonth() + 1}-${end.getDate() + 1}`
+    endDate: `${end.getFullYear()}-${end.getMonth() + 1}-${end.getDate() + 1}`
   }
 }
 

@@ -1,6 +1,6 @@
 const { serverError, success } = require('../../helpers/http-helper');
 
-class GetSessionsByUserIdController {
+class GetSessionsByLoggedUserIdController {
   #loadSessionsByUserId;
   constructor(loadSessionsByUserId) {
     this.#loadSessionsByUserId = loadSessionsByUserId;
@@ -17,4 +17,4 @@ class GetSessionsByUserIdController {
   }
 }
 
-module.exports = GetSessionsByUserIdController;
+module.exports = GetSessionsByLoggedUserIdController;

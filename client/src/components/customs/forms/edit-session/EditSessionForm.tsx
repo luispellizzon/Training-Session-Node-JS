@@ -123,9 +123,9 @@ export const EditSessionForm = ({ session, setEditButtonOpen }: EditSessionFormP
                       )}
                     >
                       {field.value ? (
-                        format(field.value, 'MM/dd/yyyy HH:mm')
+                        format(field.value, 'dd/MM/yyyy HH:mm')
                       ) : (
-                        <span>MM/DD/YYYY HH:mm</span>
+                        <span>DD/MM/YYYY HH:mm</span>
                       )}
                       <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                     </Button>

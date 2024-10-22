@@ -4,6 +4,9 @@ import { ArrowRight } from 'lucide-react';
 import { LoginModal } from '@/components/customs/modals/LoginModal';
 import RegistrationForm from '@/components/customs/forms/registration/RegistrationForm';
 import { useState } from 'react';
+import { HelpModal } from '@/components/customs/modals/HelpModal';
+import { AboutModal } from '@/components/customs/modals/AboutModal';
+import { ReportModal } from '@/components/customs/modals/ReportModal';
 
 export const Login = () => {
   const [userAction, setUserAction] = useState<string>('sign-in');
@@ -14,9 +17,24 @@ export const Login = () => {
     >
       {/* Desktop Landing Page */}
       <div className="hidden sm:flex rounded-sm shadow-2xl mx-2 my-4">
-        <div className="bg-slate-900 w-full flex justify-center">
-          <div className="w-full text-white flex-initial flex justify-center flex-col items-center p-5">
-            <h1 className="text-xl md:text-2xl text-center font-bold tracking-wider">
+        <div className="bg-slate-900 w-full flex flex-col">
+          <nav className="w-full flex p-2">
+            <ul className="w-full flex">
+              <li className="absolute">
+                <HelpModal />
+              </li>
+              <div className="flex mx-auto gap-5">
+                <li>
+                  <AboutModal />
+                </li>
+                <li>
+                  <ReportModal />
+                </li>
+              </div>
+            </ul>
+          </nav>
+          <div className="w-full text-white flex-initial flex justify-center flex-col items-center p-3">
+            <h1 className="text-xl md:text-2xl text-center font-bold tracking-wider pt-1">
               Start Your Training Here
             </h1>
             <div className="flex flex-col gap-3 lg:items-center p-4">
@@ -45,8 +63,23 @@ export const Login = () => {
 
       {/* Mobile Landing Page */}
       <div className="flex sm:hidden flex-col rounded shadow-2xl mx-1">
-        <div className="bg-slate-900 rounded w-full flex justify-center">
-          <div className="w-full text-white flex-initial flex flex-col items-center p-5 gap-3">
+        <div className="bg-slate-900 rounded w-full flex">
+          <nav className="w-full flex p-2">
+            <ul className="w-full flex">
+              <li className="absolute">
+                <HelpModal />
+              </li>
+              <div className="flex mx-auto gap-5">
+                <li>
+                  <AboutModal />
+                </li>
+                <li>
+                  <ReportModal />
+                </li>
+              </div>
+            </ul>
+          </nav>
+          <div className="w-full text-white flex-initial flex flex-col justify-center items-center p-5 gap-3">
             <h1 className="text-2xl text-center font-bold tracking-wider">
               Start Your Training Here
             </h1>

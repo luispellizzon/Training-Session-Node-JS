@@ -6,7 +6,8 @@ class SessionsRepository {
   async create(session) {
     const sessionsCollection = await MongoHelper.getCollection('sessions');
     await sessionsCollection.insertOne({
-      ...session,
+      bookingDate: session.bookingDate,
+      facilities: session.facilities,
       user_id: session.user_id,
       createdAt: new Date(),
     });
@@ -55,6 +56,28 @@ class SessionsRepository {
       bookingDate: new Date(bookedDate),
     });
     return MongoHelper.mapObjectId(session);
+  }
+
+  async loadByUserIdAndDateRange(user_id, dateRange) {
+    const sessionsCollection = await MongoHelper.getCollection('sessions');
+    const queryBuilder = new MongoQueryBuilder();
+    const query = queryBuilder
+      .match({
+        user_id: user_id,
+        bookingDate: {
+          $gte: new Date(dateRange.from),
+          $lte: new Date(dateRange.to),
+        },
+      })
+      .project({
+        _id: 1,
+        bookingDate: 1,
+        facilities: 1,
+        createdAt: 1,
+      })
+      .build();
+    const sessions = await sessionsCollection.aggregate(query).toArray();
+    return sessions;
   }
 
   async loadByUserId(user_id) {

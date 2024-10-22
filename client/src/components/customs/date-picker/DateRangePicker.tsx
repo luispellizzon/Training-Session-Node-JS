@@ -1,50 +1,42 @@
-import * as React from 'react'
-import { format } from 'date-fns'
-import { Calendar as CalendarIcon } from 'lucide-react'
-import { DateRange } from 'react-day-picker'
+import * as React from 'react';
+import { format } from 'date-fns';
+import { Calendar as CalendarIcon } from 'lucide-react';
+import { DateRange } from 'react-day-picker';
 
-import { cn } from '@/lib/utils'
-import { Button } from '@/components/ui/button'
-import { Calendar } from '@/components/ui/calendar'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger
-} from '@/components/ui/popover'
-import { DateRangeInputs } from '@/hooks/apprentice/useFetchApprentices'
-import { toast } from 'sonner'
-import { Spinner } from '../spinner/Spinner'
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { toast } from 'sonner';
+import { Spinner } from '../spinner/Spinner';
+import { DateRangeInputs } from '@/schemas/types/DateRangeInputs';
 
 type DatePickerWithRangeProps = {
-    className?: React.HTMLAttributes<HTMLDivElement>
-  refetch: (dates: DateRangeInputs) => void,
-  isPending: boolean
-}
+  className?: React.HTMLAttributes<HTMLDivElement>;
+  refetch: (dates: DateRangeInputs) => void;
+  isPending: boolean;
+};
 
-export function DatePickerWithRange ({
-  className,
-  refetch,
-  isPending
-}: DatePickerWithRangeProps) {
+export function DatePickerWithRange({ className, refetch, isPending }: DatePickerWithRangeProps) {
   const [date, setDate] = React.useState<DateRange | undefined>({
     from: undefined,
-    to: undefined
-  })
+    to: undefined,
+  });
 
   const handleClick = () => {
     if (!date?.from || !date.to) {
-      toast.error('Date is not set')
-      return
+      toast.error('Date is not set');
+      return;
     }
-    const startDate = `${date.from.getFullYear()}-${date.from.getMonth() + 1}-${date.from.getDate()}`
-    const end = new Date(date.to)
-    end.setDate(end.getDate() + 1)
-    const endDate = `${end.getFullYear()}-${end.getMonth() + 1}-${end.getDate()}`
+    const startDate = `${date.from.getFullYear()}-${date.from.getMonth() + 1}-${date.from.getDate()}`;
+    const end = new Date(date.to);
+    end.setDate(end.getDate() + 1);
+    const endDate = `${end.getFullYear()}-${end.getMonth() + 1}-${end.getDate()}`;
     refetch({
       startDate,
-      endDate
-    })
-  }
+      endDate,
+    });
+  };
 
   return (
     <div className={cn('flex gap-2', className)}>
@@ -59,23 +51,18 @@ export function DatePickerWithRange ({
             )}
           >
             <CalendarIcon className="mr-2 h-4 w-4" />
-            {date?.from
-              ? (
-                  date.to
-                    ? (
+            {date?.from ? (
+              date.to ? (
                 <>
-                  {format(date.from, 'LLL dd, y')} -{' '}
-                  {format(date.to, 'LLL dd, y')}
+                  {format(date.from, 'LLL dd, y')} - {format(date.to, 'LLL dd, y')}
                 </>
-                      )
-                    : (
-                        format(date.from, 'LLL dd, y')
-                      )
-                )
-              : (
+              ) : (
+                format(date.from, 'LLL dd, y')
+              )
+            ) : (
               <span>Pick a date</span>
-                )}
-                  </Button>
+            )}
+          </Button>
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0" align="start">
           <Calendar
@@ -87,17 +74,17 @@ export function DatePickerWithRange ({
             numberOfMonths={2}
           />
         </PopoverContent>
-          </Popover>
-      <Button variant={'default'}
-          disabled={isPending}
-              onClick={handleClick}
-      >
-        {isPending
-          ? <>
-            <Spinner />{''}
-            </>
-          : 'Search'}
-          </Button>
+      </Popover>
+      <Button variant={'default'} disabled={isPending} onClick={handleClick}>
+        {isPending ? (
+          <>
+            <Spinner />
+            {''}
+          </>
+        ) : (
+          'Search'
+        )}
+      </Button>
     </div>
-  )
+  );
 }
