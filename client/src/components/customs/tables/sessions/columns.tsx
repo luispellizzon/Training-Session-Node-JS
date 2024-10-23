@@ -1,9 +1,9 @@
 import { ArrowUpDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ColumnDef } from '@tanstack/react-table';
-import { UserModel } from '@/schemas/types/UserModel';
+import { SessionModel } from '@/schemas/types/SessionModel';
 
-export const columns: ColumnDef<UserModel>[] = [
+export const columns: ColumnDef<Omit<SessionModel, 'user_id'>>[] = [
   {
     accessorKey: 'bookingDate',
     header: ({ column }) => {
@@ -29,7 +29,7 @@ export const columns: ColumnDef<UserModel>[] = [
     header: 'Facilities',
   },
   {
-    accessorKey: 'Booking At',
+    accessorKey: 'createdAt',
     header: ({ column }) => {
       return (
         <Button

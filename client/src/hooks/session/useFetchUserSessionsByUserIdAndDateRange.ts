@@ -1,6 +1,6 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import axios from '@/api/axios/axios'
-import { SessionModel } from '@/schemas/types/SessionModel'
+import { UserSessions } from '@/schemas/types/SessionModel'
 type GetSessionsByUserIdAndDateRangeProps = {
   user_id: string;
   dateRange: {
@@ -8,11 +8,13 @@ type GetSessionsByUserIdAndDateRangeProps = {
     to?: Date | undefined;
   };
 }
-const getSessionsByUserIdAndDateRange = async ({ user_id, dateRange }: GetSessionsByUserIdAndDateRangeProps): Promise<SessionModel[]> => {
-  const { data } = await axios.post<SessionModel[]>(`/api/user/${user_id}/sessions`,
+const getSessionsByUserIdAndDateRange = async ({ user_id, dateRange }: GetSessionsByUserIdAndDateRangeProps): Promise<UserSessions> => {
+  const endDate = dateRange.to ? new Date(dateRange.to) : undefined
+  endDate?.setDate(endDate.getDate() + 1)
+  const { data } = await axios.post<UserSessions>(`/api/user/${user_id}/sessions`,
     {
       from: dateRange.from,
-      to: dateRange.to
+      to: endDate
     },
   )
   return data
@@ -20,10 +22,13 @@ const getSessionsByUserIdAndDateRange = async ({ user_id, dateRange }: GetSessio
 
 
 export const useFetchUserSessionsByUserIdAndDateRange = () => {
-  // const queryClient = useQueryClient()
-  return useMutation<SessionModel[], Error, GetSessionsByUserIdAndDateRangeProps>({
-    mutationKey: ['user-session-report'],
+  const queryClient = useQueryClient()
+  return useMutation<UserSessions, Error, GetSessionsByUserIdAndDateRangeProps>({
+    // mutationKey: ['user-session-report'],
     mutationFn: getSessionsByUserIdAndDateRange,
+    onSuccess: (data) => {
+      queryClient.setQueryData(['user-session-report'], data)
+    }
   })
 }
 

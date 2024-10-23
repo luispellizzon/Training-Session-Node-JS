@@ -7,3 +7,8 @@ export type SessionModel = {
     createAt: string;
     facilities: FacilitiesModel[]
 }
+
+export type UserSessions = {
+    username: string;
+    sessions: Omit<SessionModel, "user_id">[]
+}

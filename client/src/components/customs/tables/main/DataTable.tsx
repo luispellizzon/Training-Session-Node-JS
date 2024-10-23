@@ -29,12 +29,14 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[] | [];
   isPending: boolean;
+  isFilterByName: boolean;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   isPending,
+  isFilterByName,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -55,14 +57,17 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
-      <div className="flex justify-between items-center py-4">
-        <Input
-          placeholder="Filter names..."
-          value={(table.getColumn('username')?.getFilterValue() as string) ?? ''}
-          onChange={(event) => table.getColumn('username')?.setFilterValue(event.target.value)}
-          className="max-w-sm"
-        />
-      </div>
+      {isFilterByName && (
+        <div className="flex justify-between items-center py-4">
+          <Input
+            placeholder="Filter names..."
+            value={(table.getColumn('username')?.getFilterValue() as string) ?? ''}
+            onChange={(event) => table.getColumn('username')?.setFilterValue(event.target.value)}
+            className="max-w-sm"
+          />
+        </div>
+      )}
+
       <div className="rounded-md border bg-white shadow-lg">
         <Table>
           <TableHeader>
