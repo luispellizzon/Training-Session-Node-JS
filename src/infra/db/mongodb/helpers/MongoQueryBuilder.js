@@ -11,6 +11,11 @@ class MongoQueryBuilder {
     return this;
   }
 
+  unwind(data) {
+    this.#query.push({ $unwind: data });
+    return this;
+  }
+
   group(data) {
     this.#query.push({ $group: data });
     return this;

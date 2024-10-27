@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "install:all": "npm install && npm run install:client",
+    "install:client": "cd client && npm install",
     "start": "node --env-file=.env src/main/server.js",
     "dev": "concurrently \"nodemon --env-file=.env src/main/server.js\" \"cd client && npm run dev\""
   },

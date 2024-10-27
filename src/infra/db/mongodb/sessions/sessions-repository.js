@@ -90,11 +90,20 @@ class SessionsRepository {
     const sessionsCollection = await MongoHelper.getCollection('sessions');
     const queryBuilder = new MongoQueryBuilder();
     const query = queryBuilder
+      .lookup({
+        from: 'users',
+        localField: 'user_id',
+        foreignField: '_id',
+        as: 'userDetails',
+      })
+      .unwind('$userDetails')
       .group({
         _id: '$bookingDate',
         sessions: {
           $push: {
             user_id: '$user_id',
+            username: '$userDetails.username',
+            email: '$userDetails.email',
             facilities: '$facilities',
           },
         },
@@ -106,7 +115,7 @@ class SessionsRepository {
         _id: 0,
         bookingDate: '$_id',
         sessions: 1,
-        facilities: {
+        totalFacilities: {
           $reduce: {
             input: '$facilities',
             initialValue: [],
