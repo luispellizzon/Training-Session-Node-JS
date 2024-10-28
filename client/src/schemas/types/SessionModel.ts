@@ -10,6 +10,8 @@ export type SessionModel = {
 
 export type UserSessions = {
     username: string;
-    sessions: Omit<SessionModel, "user_id">[]
-    totalSessions: string
+    data: {
+        sessions: Omit<SessionModel, "user_id">[]
+        totalSessions: string
+    }
 }

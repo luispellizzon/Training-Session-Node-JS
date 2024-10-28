@@ -30,7 +30,10 @@ class GetSessionsByUserIdAndDateRangeController {
       );
       return success({
         username: isUser.username,
-        ...sessions,
+        data: {
+          ...sessions,
+          sessions: sessions?.sessions || [],
+        },
       });
     } catch (error) {
       return serverError(error);

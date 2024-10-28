@@ -144,22 +144,23 @@ export function GetSessionsByUserIdAndDateRangeForm() {
           </div>
         </form>
       </Form>
-      {(isError || data?.sessions.length === 0) && (
+      {(isError || data?.data?.sessions.length === 0) && (
         <p className="text-red-600 font-semibold text-center">No Results found</p>
       )}
-      {data !== undefined && data?.sessions.length > 0 && (
+      {data?.data?.sessions !== undefined && data?.data?.sessions?.length > 0 && (
         <div className="py-1 -z-10">
           <div className="flex flex-row justify-between">
             <p className="text-center ">
               User: <span className="italic font-semibold">{data.username}</span>
             </p>
             <p className="text-center">
-              Total Sessions: <span className="italic font-semibold">{data.totalSessions}</span>
+              Total Sessions:{' '}
+              <span className="italic font-semibold">{data.data.totalSessions}</span>
             </p>
           </div>
           <DataTable
             columns={columns}
-            data={data?.sessions ?? []}
+            data={data?.data?.sessions ?? []}
             isPending={isPending}
             isFilterByName={false}
           />
