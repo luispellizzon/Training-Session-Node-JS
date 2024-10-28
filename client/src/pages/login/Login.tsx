@@ -18,19 +18,17 @@ export const Login = () => {
       {/* Desktop Landing Page */}
       <div className="hidden sm:flex rounded-sm shadow-2xl mx-2 my-4">
         <div className="bg-slate-900 w-full flex flex-col">
-          <nav className="w-full flex p-2">
-            <ul className="w-full flex">
-              <li className="absolute">
+          <nav className="w-full p-2">
+            <ul className="w-full flex justify-center gap-5">
+              <li>
+                <AboutModal />
+              </li>
+              <li>
+                <ReportModal />
+              </li>
+              <li>
                 <HelpModal />
               </li>
-              <div className="flex mx-auto gap-5">
-                <li>
-                  <AboutModal />
-                </li>
-                <li>
-                  <ReportModal />
-                </li>
-              </div>
             </ul>
           </nav>
           <div className="w-full text-white flex-initial flex justify-center flex-col items-center p-3">
@@ -52,7 +50,7 @@ export const Login = () => {
               </p>
             </div>
             <img src={HeroImage} alt="Hero image" className="w-[500px]" />
-            <p className="text-xs italic text-center">MTU Fitness Training Session</p>
+            <p className="text-xs italic text-center">MTU Fitness Training Center</p>
           </div>
         </div>
         <div className="bg-white flex-auto flex items-center px-5 py-4 justify-center md:min-w-[350px]">
@@ -63,20 +61,18 @@ export const Login = () => {
 
       {/* Mobile Landing Page */}
       <div className="flex sm:hidden flex-col rounded shadow-2xl mx-1">
-        <div className="bg-slate-900 rounded w-full flex">
-          <nav className="w-full flex p-2">
-            <ul className="w-full flex">
-              <li className="absolute">
+        <div className="bg-slate-900 rounded w-full flex flex-col">
+          <nav className="w-full p-2">
+            <ul className="w-full flex justify-center gap-5">
+              <li>
+                <AboutModal />
+              </li>
+              <li>
+                <ReportModal />
+              </li>
+              <li>
                 <HelpModal />
               </li>
-              <div className="flex mx-auto gap-5">
-                <li>
-                  <AboutModal />
-                </li>
-                <li>
-                  <ReportModal />
-                </li>
-              </div>
             </ul>
           </nav>
           <div className="w-full text-white flex-initial flex flex-col justify-center items-center p-5 gap-3">
@@ -101,7 +97,7 @@ export const Login = () => {
             <div className="w-[75%]">
               <LoginModal />
             </div>
-            <p className="text-xs italic text-center pt-4">MTU Fitness Training Session</p>
+            <p className="text-xs italic text-center pt-4">MTU Fitness Training Center</p>
           </div>
         </div>
       </div>

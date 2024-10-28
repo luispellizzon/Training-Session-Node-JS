@@ -69,15 +69,26 @@ class SessionsRepository {
           $lte: new Date(dateRange.to),
         },
       })
+      .group({
+        _id: null,
+        sessions: {
+          $push: {
+            _id: '$_id',
+            bookingDate: '$bookingDate',
+            facilities: '$facilities',
+            createdAt: '$createdAt',
+          },
+        },
+        totalSessions: { $sum: 1 },
+      })
       .project({
-        _id: 1,
-        bookingDate: 1,
-        facilities: 1,
-        createdAt: 1,
+        _id: 0,
+        sessions: 1,
+        totalSessions: 1,
       })
       .build();
     const sessions = await sessionsCollection.aggregate(query).toArray();
-    return sessions;
+    return sessions[0];
   }
 
   async loadByUserId(user_id) {

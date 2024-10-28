@@ -146,7 +146,7 @@ export default function RegistrationForm({ setUserAction }: RegistrationForm) {
                     {'Checking credentials...'}
                   </>
                 ) : (
-                  'Submit'
+                  'Create Account'
                 )}
               </Button>
             </div>

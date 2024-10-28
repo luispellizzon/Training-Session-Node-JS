@@ -138,7 +138,7 @@ export function GetSessionsByUserIdAndDateRangeForm() {
                   {'Fetching User Sessions...'}
                 </span>
               ) : (
-                'Submit'
+                'Search'
               )}
             </Button>
           </div>
@@ -149,9 +149,14 @@ export function GetSessionsByUserIdAndDateRangeForm() {
       )}
       {data !== undefined && data?.sessions.length > 0 && (
         <div className="py-1 -z-10">
-          <p className="text-center font-semibold">
-            Results for user: <span className="italic">{data.username}</span>
-          </p>
+          <div className="flex flex-row justify-between">
+            <p className="text-center ">
+              User: <span className="italic font-semibold">{data.username}</span>
+            </p>
+            <p className="text-center">
+              Total Sessions: <span className="italic font-semibold">{data.totalSessions}</span>
+            </p>
+          </div>
           <DataTable
             columns={columns}
             data={data?.sessions ?? []}

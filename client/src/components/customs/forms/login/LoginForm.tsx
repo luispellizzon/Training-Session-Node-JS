@@ -108,7 +108,7 @@ export default function LoginForm({ setUserAction }: LoginFormProps) {
                     {'Checking credentials...'}
                   </>
                 ) : (
-                  'Login'
+                  'Sign In'
                 )}
               </Button>
             </div>
