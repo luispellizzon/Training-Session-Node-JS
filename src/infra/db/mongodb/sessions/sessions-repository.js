@@ -6,9 +6,7 @@ class SessionsRepository {
   async create(session) {
     const sessionsCollection = await MongoHelper.getCollection('sessions');
     await sessionsCollection.insertOne({
-      bookingDate: session.bookingDate,
-      facilities: session.facilities,
-      user_id: session.user_id,
+      ...session,
       createdAt: new Date(),
     });
   }

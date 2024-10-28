@@ -1,13 +1,25 @@
 class DbCreateSession {
   #createSessionRepository;
-  constructor(createSessionRepository) {
+  #createPaymentTransactionRepository;
+  constructor(createSessionRepository, createPaymentTransactionRepository) {
     this.#createSessionRepository = createSessionRepository;
+    this.#createPaymentTransactionRepository = createPaymentTransactionRepository;
   }
 
   async create(session) {
-    return await this.#createSessionRepository.create({
+    const transaction_id = await this.#createPaymentTransactionRepository.create({
+      cardNumber: session.cardNumber,
+      cvv: session.cvv,
+      expiryDate: session.expiryDate,
+    });
+    delete session.cardNumber;
+    delete session.cvv;
+    delete session.expiryDate;
+
+    await this.#createSessionRepository.create({
       ...session,
       bookingDate: new Date(session.bookingDate),
+      transaction_id,
     });
   }
 }

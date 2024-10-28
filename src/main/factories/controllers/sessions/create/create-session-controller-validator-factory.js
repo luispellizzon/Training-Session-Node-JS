@@ -7,13 +7,14 @@ const {
 const DateValidatorAdapter = require('../../../../../infra/validators/date-validator-adapter');
 const createSessionControllerValidatorFactory = () => {
   const validators = [];
-  const requiredFields = ['bookingDate', 'facilities'];
+  const requiredFields = ['bookingDate', 'facilities', 'cardNumber', 'cvv', 'expiryDate'];
 
   for (const requiredField of requiredFields) {
     validators.push(new RequiredFieldValidator(requiredField));
   }
 
   validators.push(new DateValidator('bookingDate', new DateValidatorAdapter()));
+  validators.push(new DateValidator('expiryDate', new DateValidatorAdapter()));
   validators.push(new ArrayValidator('facilities'));
 
   return new ValidatorComposite(validators);
