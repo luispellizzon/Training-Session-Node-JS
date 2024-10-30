@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css?family=Karla:400,700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -90,7 +91,6 @@ html {
   overflow: hidden;
 }
 
-@import url('https://fonts.googleapis.com/css?family=Karla:400,700&display=swap');
 .font-family-karla {
   font-family: karla;
 }

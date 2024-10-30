@@ -31,7 +31,7 @@ export const Login = () => {
               </li>
             </ul>
           </nav>
-          <div className="w-full text-white flex-initial flex justify-center flex-col items-center p-3">
+          <div className="w-full text-white flex-initial flex justify-center flex-col items-center p-3 my-auto">
             <h1 className="text-xl md:text-2xl text-center font-bold tracking-wider pt-1">
               Start Your Training Here
             </h1>
@@ -96,7 +96,7 @@ export const Login = () => {
             <img src={HeroImage} alt="Hero image" className="w-[500px] relative left-[-10px]" />
             <div className="w-[75%]">
               <LoginModal />
-            </div>
+            </div> 
             <p className="text-xs italic text-center pt-4">MTU Fitness Training Center</p>
           </div>
         </div>

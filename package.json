@@ -6,6 +6,7 @@
     "install:all": "npm install && npm run install:client",
     "install:client": "cd client && npm install",
     "start": "node --env-file=.env src/main/server.js",
+    "app": "npm run install:all && npm run dev",
     "dev": "concurrently \"nodemon --env-file=.env src/main/server.js\" \"cd client && npm run dev\""
   },
   "keywords": [],
